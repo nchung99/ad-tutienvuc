@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tu Tiên Vực Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/images/synd-logo.png">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="login-wrap" id="loginWrap">
+  <form class="login-card" id="loginForm">
+    <div class="logo"><img src="assets/images/synd-logo.png" alt=""><b>Tu Tiên<em>Vực</em></b></div>
+    <h1>Admin Portal</h1><p>Đăng nhập tài khoản quản trị Tu Tiên Vực.</p>
+    <label>Email<input id="email" type="email" required autocomplete="username"></label>
+    <label>Mật khẩu<input id="password" type="password" required autocomplete="current-password"></label>
+    <button>ĐĂNG NHẬP</button><small id="loginError"></small>
+  </form>
+</div>
+
+<div class="app" id="app">
+  <aside class="admin-sidebar">
+    <a class="side-brand" href="https://tutienvuc.com" target="_blank" rel="noopener">
+      <img src="assets/images/synd-logo.png" alt=""><span><b>TU TIÊN VỰC</b><small>ADMIN PORTAL</small></span>
+    </a>
+    <nav class="admin-nav">
+      <button class="nav-item active" data-view="dashboard"><span>▦</span> Tổng quan</button>
+      <button class="nav-item" data-view="support"><span>◉</span> Hỗ trợ khách hàng <i id="navUnread"></i></button>
+      <button class="nav-item" data-view="news"><span>▤</span> Tin tức & Sự kiện</button>
+      <button class="nav-item disabled" type="button"><span>◇</span> Quản lý game <small>Sau</small></button>
+    </nav>
+    <div class="side-bottom"><a href="https://tutienvuc.com" target="_blank" rel="noopener">↗ Xem website</a><button id="logout">Đăng xuất</button></div>
+  </aside>
+
+  <div class="admin-shell">
+    <header class="topbar"><div><button id="mobileMenu" type="button">☰</button><h1 id="pageTitle">Tổng quan</h1></div><div class="top-actions"><button id="soundToggle" type="button">🔔 Âm: Bật</button><span class="admin-pill">ADMIN</span></div></header>
+
+    <main class="portal-main">
+      <section class="portal-view active" id="view-dashboard">
+        <div class="welcome"><div><small>TU TIÊN VỰC ADMIN</small><h2>Chào mừng trở lại.</h2><p>Quản lý hỗ trợ người chơi và nội dung website tại một nơi.</p></div><button class="primary" data-go="news">+ ĐĂNG TIN MỚI</button></div>
+        <div class="stats-grid">
+          <article><span>💬</span><div><small>TỔNG HỘI THOẠI</small><b id="statConversations">—</b></div></article>
+          <article><span>🔴</span><div><small>ĐANG HỖ TRỢ</small><b id="statOpen">—</b></div></article>
+          <article><span>📰</span><div><small>TIN ĐÃ ĐĂNG</small><b id="statPublished">—</b></div></article>
+          <article><span>✎</span><div><small>BẢN NHÁP</small><b id="statDraft">—</b></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-head"><div><small>HỖ TRỢ</small><h3>Hội thoại gần đây</h3></div><button data-go="support">Xem tất cả →</button></div><div id="recentConversations" class="mini-list"><div class="empty">Đang tải...</div></div></article>
+          <article class="panel"><div class="panel-head"><div><small>NỘI DUNG</small><h3>Tin mới nhất</h3></div><button data-go="news">Quản lý →</button></div><div id="recentNews" class="mini-list"><div class="empty">Chưa có dữ liệu CMS.</div></div></article>
+        </div>
+      </section>
+
+      <section class="portal-view" id="view-support">
+        <div class="support-layout">
+          <aside class="inbox-panel"><div class="tools"><input id="search" placeholder="Tìm tên / ID / Zalo..."><button id="refresh">↻</button></div><div class="filters"><button class="active" data-filter="all">Tất cả</button><button data-filter="open">Đang hỗ trợ</button><button data-filter="closed">Đã xử lý</button></div><div id="list" class="list"></div></aside>
+          <section class="chat-panel"><div class="player" id="player">Chọn một người chơi để hỗ trợ</div><div class="admin-meta hidden" id="adminMeta"><div class="meta-field"><label>Tên ghi nhớ</label><input id="adminAlias" maxlength="80" placeholder="VD: Hùng test / Khách VIP..."></div><div class="meta-field note-field"><label>Ghi chú nội bộ <span>• chỉ Admin thấy</span></label><input id="adminNote" maxlength="250" placeholder="VD: Đã cấp code / cần gọi lại..."></div><button id="saveMeta" type="button">LƯU</button><small id="metaStatus"></small></div><div class="chat-search hidden" id="chatSearch"><input id="chatSearchInput" placeholder="Tìm trong đoạn chat..."><span id="chatSearchCount">0 / 0</span><button id="chatSearchPrev" type="button">↑</button><button id="chatSearchNext" type="button">↓</button><button id="chatSearchClose" type="button">×</button></div><div class="messages" id="messages"></div><div class="statusbar"><button id="openChatSearch" type="button" disabled>🔍 Tìm tin nhắn</button><button id="toggleStatus" disabled>Đánh dấu đã xử lý</button></div><div class="image-preview hidden" id="adminImagePreview"></div><form id="form"><input id="adminImageInput" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden><button class="image-pick" id="adminImagePick" type="button" disabled>🖼</button><input id="input" placeholder="Trả lời người chơi..." disabled><button class="send-btn" disabled>GỬI</button></form></section>
+        </div>
+      </section>
+
+      <section class="portal-view" id="view-news">
+        <div class="content-toolbar"><div><small>CMS</small><h2>Tin tức & Sự kiện</h2><p>Đăng nội dung lên website mà không cần sửa code.</p></div><button class="primary" id="newPostBtn">+ THÊM BÀI VIẾT</button></div>
+        <div class="cms-filters"><input id="newsSearch" placeholder="Tìm bài viết..."><select id="newsStatusFilter"><option value="all">Tất cả trạng thái</option><option value="published">Đã đăng</option><option value="scheduled">Đã hẹn</option><option value="draft">Bản nháp</option><option value="hidden">Đã ẩn</option></select><select id="newsTypeFilter"><option value="all">Tất cả loại</option><option value="news">Tin tức</option><option value="event">Sự kiện</option></select></div>
+        <div class="cms-table-wrap"><table class="cms-table"><thead><tr><th>BÀI VIẾT</th><th>LOẠI</th><th>GAME</th><th>TRẠNG THÁI</th><th>NGÀY</th><th></th></tr></thead><tbody id="newsTable"><tr><td colspan="6" class="empty">Đang tải CMS...</td></tr></tbody></table></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="postModal"><form class="post-modal" id="postForm"><div class="modal-head"><div><small>CMS TU TIÊN VỰC</small><h2 id="postModalTitle">Thêm bài viết</h2></div><button type="button" id="closePostModal">×</button></div><div class="post-grid"><label class="wide">Tiêu đề<input id="postTitle" maxlength="180" required placeholder="Nhập tiêu đề bài viết"></label><label>Loại<select id="postType"><option value="news">Tin tức</option><option value="event">Sự kiện</option></select></label><label>Game liên quan<input id="postGame" maxlength="100" placeholder="VD: Thiên Cơ Quyền"></label><label class="wide">Mô tả ngắn<textarea id="postExcerpt" maxlength="350" rows="3" placeholder="Nội dung hiển thị ngoài danh sách..."></textarea></label><label class="wide">Nội dung<textarea id="postContent" rows="9" placeholder="Nhập nội dung bài viết..."></textarea></label><label>Tên nút<input id="postButtonText" maxlength="50" placeholder="VD: TẢI GAME"></label><label>Link nút<input id="postButtonUrl" type="url" placeholder="https://..."></label><label class="wide">Ảnh banner<div class="cover-row"><input id="postImage" type="file" accept="image/jpeg,image/png,image/webp"><input id="postImageUrl" placeholder="Hoặc dán URL ảnh"></div><img id="postPreview" class="post-preview hidden" alt="Preview"></label><label>Trạng thái<select id="postStatus"><option value="draft">Bản nháp</option><option value="published">Đăng ngay</option><option value="scheduled">Hẹn giờ đăng</option><option value="hidden">Ẩn</option></select></label><label><span id="postDateLabel">Ngày đăng</span><input id="postDate" type="datetime-local"></label></div><div class="modal-actions"><button type="button" class="ghost" id="cancelPost">HỦY</button><button type="submit" class="primary" id="savePost">LƯU BÀI VIẾT</button></div><small id="postStatusText"></small></form></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="admin.js"></script>
+</body></html>
